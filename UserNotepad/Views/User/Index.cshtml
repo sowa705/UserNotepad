@@ -1,0 +1,68 @@
+﻿@model IEnumerable<UserNotepad.Models.User>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>User list</h1>
+
+<p>
+    <a asp-action="Create">Create a new User</a>
+    <a asp-action="GenerateReport">Generate report</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attributes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                <text>@item.Birthday.ToShortDateString()</text>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @foreach (var attrib in item.Attributes)
+                {
+                    @Html.DisplayName($"{attrib.Key} : {attrib.Value}");
+                    <a asp-action="DeleteAttribute" asp-route-id="@item.Id" asp-route-attribname="@attrib.Key">Delete</a>
+                    <text>|</text>
+                    <a asp-action="EditAttribute" asp-route-id="@item.Id" asp-route-attribname="@attrib.Key" asp-route-attribvalue="@attrib.Value">Edit</a>
+                    <br/>
+                }
+                <a asp-action="EditAttribute" asp-route-id="@item.Id" asp-route-attribname="attrib">Create a new attribute</a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
